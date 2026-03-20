@@ -25,7 +25,8 @@ const PublicRoute = ({ children }: { children: ReactNode }) => {
   return isAuthenticated ? <Navigate to="/products" replace /> : <>{children}</>;
 };
 
-const App = () => (
+const App = () => {
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
