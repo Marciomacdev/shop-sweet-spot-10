@@ -1,14 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const product = products.find((p) => p.id === id);
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (!product) return;
+    addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   if (!product) {
     return (
@@ -72,8 +83,18 @@ const ProductDetail = () => {
               })}
             </p>
 
-            <Button size="lg" className="mt-8 w-full sm:w-auto">
-              Adicionar ao carrinho
+            <Button size="lg" className="mt-8 w-full sm:w-auto" onClick={handleAdd}>
+              {added ? (
+                <>
+                  <Check className="mr-2 h-4 w-4" />
+                  Adicionado!
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Adicionar ao carrinho
+                </>
+              )}
             </Button>
           </motion.div>
         </div>
