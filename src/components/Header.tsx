@@ -1,10 +1,12 @@
-import { LogOut, ShoppingBag } from "lucide-react";
+import { LogOut, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const { userEmail, logout } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,7 +25,20 @@ const Header = () => {
           Vitrine
         </button>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/cart")}
+            className="relative"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {totalItems}
+              </span>
+            )}
+          </Button>
           <span className="hidden text-sm text-muted-foreground sm:inline">
             {userEmail}
           </span>
